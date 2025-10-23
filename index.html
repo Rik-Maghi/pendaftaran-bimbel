@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pendaftaran Les Bimbel</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="container header">
+    <h1>Pendaftaran Les Bimbel</h1>
+    <nav>
+      <a href="#register">Daftar</a>
+      <a href="#upload">Upload Bukti</a>
+      <a href="#status">Cek Status</a>
+      <a href="#admin">Admin</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- Register Section -->
+    <section id="register" class="card">
+      <h2>Form Pendaftaran</h2>
+      <form id="formRegister">
+        <div class="grid">
+          <label>Nama Siswa
+            <input required name="nama" placeholder="Contoh: Alya Putri">
+          </label>
+          <label>Telp/WA
+            <input required name="telp" placeholder="+62...">
+          </label>
+          <label>Email
+            <input required type="email" name="email" placeholder="nama@email.com">
+          </label>
+          <label>Sekolah
+            <input name="sekolah" placeholder="SMAN 1">
+          </label>
+          <label>Kelas Angkatan
+            <select name="kelas_angkatan">
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9" selected>9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+            </select>
+          </label>
+          <label>Program
+            <select id="programSelect" name="program_id"></select>
+          </label>
+          <label>Kelas (Jadwal)
+            <select id="classSelect" name="class_id"></select>
+          </label>
+        </div>
+        <div class="actions">
+          <button type="submit">Daftar & Dapatkan Invoice</button>
+        </div>
+      </form>
+      <div id="registerResult" class="notice" hidden></div>
+    </section>
+
+    <!-- Upload Section -->
+    <section id="upload" class="card">
+      <h2>Upload Bukti Pembayaran</h2>
+      <form id="formUpload">
+        <div class="grid">
+          <label>No. Invoice
+            <input required name="invoice_no" placeholder="INV-{{YYYY}}-0001">
+          </label>
+          <label>Email / Telp
+            <input required name="contact" placeholder="email atau telp yang digunakan saat daftar">
+          </label>
+          <label>Nominal (Rp)
+            <input required name="nominal" type="number" min="0" step="1000" placeholder="750000">
+          </label>
+          <label>Bukti Transfer (gambar)
+            <input required name="bukti" type="file" accept="image/*">
+          </label>
+        </div>
+        <div class="actions">
+          <button type="submit">Upload</button>
+        </div>
+      </form>
+      <div id="uploadResult" class="notice" hidden></div>
+    </section>
+
+    <!-- Status Section -->
+    <section id="status" class="card">
+      <h2>Cek Status Registrasi</h2>
+      <form id="formStatus">
+        <div class="grid">
+          <label>No. Invoice
+            <input required name="invoice_no" placeholder="INV-{{YYYY}}-0001">
+          </label>
+          <label>Email / Telp
+            <input required name="contact" placeholder="email atau telp">
+          </label>
+        </div>
+        <div class="actions">
+          <button type="submit">Cek</button>
+        </div>
+      </form>
+      <div id="statusResult" class="notice" hidden></div>
+    </section>
+
+    <!-- Admin Section -->
+    <section id="admin" class="card">
+      <h2>Admin Dashboard</h2>
+      <div id="adminLogin">
+        <label>Password Admin
+          <input type="password" id="adminPwd" placeholder="admin">
+        </label>
+        <button id="btnAdminLogin">Masuk</button>
+      </div>
+
+      <div id="adminPanel" hidden>
+        <div class="adminGrid">
+          <div>
+            <h3>Menunggu Verifikasi</h3>
+            <table id="tblPending">
+              <thead><tr><th>Invoice</th><th>Nama</th><th>Program/Kelas</th><th>Nominal</th><th>Aksi</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div>
+            <h3>Peserta per Kelas</h3>
+            <table id="tblPeserta">
+              <thead><tr><th>Kelas</th><th>Hari</th><th>Jam</th><th>Kuota</th><th>Terpakai</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="actions">
+          <button id="btnExportRegs">Export Registrations CSV</button>
+          <button id="btnExportPayments">Export Payments CSV</button>
+          <button id="btnLogout">Logout</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <small>© 2025 Bimbel Demo | Data tersimpan lokal (localStorage).</small>
+  </footer>
+
+  <script>
+    window.__YEAR__ = 2025;
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>

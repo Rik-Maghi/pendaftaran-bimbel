@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Invoice Bimbel</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .invoice { max-width: 720px; margin: 24px auto; }
+    .badge { background:#eee; padding:4px 8px; border-radius:8px; font-size:12px; }
+  </style>
+</head>
+<body>
+  <div class="invoice card">
+    <h1>Invoice / Kartu Registrasi</h1>
+    <div id="meta"></div>
+    <table id="tbl"></table>
+    <div class="actions">
+      <a href="index.html#status">Kembali</a>
+      <button onclick="window.print()">Cetak / Simpan PDF</button>
+    </div>
+  </div>
+
+<script>
+function fmt(n){return new Intl.NumberFormat('id-ID').format(n)}
+function qs(k){return new URLSearchParams(location.search).get(k)}
+const db = JSON.parse(localStorage.getItem('bimbel_db')||'{}')
+const inv = qs('invoice')
+const reg = (db.registrations||[]).find(r=>r.invoice_no===inv)
+if(!reg){
+  document.getElementById('meta').innerHTML = '<p>Invoice tidak ditemukan.</p>'
+}else{
+  const student = (db.students||[]).find(s=>s.id===reg.student_id) || {}
+  const cls = (db.classes||[]).find(c=>c.id===reg.class_id) || {}
+  const program = (db.programs||[]).find(p=>p.id===cls.program_id) || {}
+  const status = reg.status || 'Pending'
+  const meta = `Nomor: <b>${reg.invoice_no}</b> &nbsp;|&nbsp;
+    Tanggal: <b>${reg.tanggal_daftar}</b> &nbsp;|&nbsp;
+    Status: <span class="badge">${status}</span>`
+  document.getElementById('meta').innerHTML = `<p>${meta}</p>`
+  const rows = [
+    ['Nama Siswa', student.nama||'-'],
+    ['Program', program.nama_program||'-'],
+    ['Kelas', cls.nama_kelas||'-'],
+    ['Jadwal', `${cls.hari||'-'}, ${cls.jam_mulai||'-'}–${cls.jam_selesai||'-'}`],
+    ['Kontak', `${student.telp||'-'} / ${student.email||'-'}`],
+    ['Total Biaya', 'Rp ' + fmt(program.harga||0)]
+  ].map(([k,v])=>`<tr><th>${k}</th><td>${v}</td></tr>`).join('')
+  document.getElementById('tbl').innerHTML = rows
+}
+</script>
+</body>
+</html>
